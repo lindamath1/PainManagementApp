@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <!-- Add these lines to check if the template receives data -->
+    {% if pains %}
+        <p>Pains received in the template!</p>
+    {% else %}
+        <p>No pains received in the template.</p>
+    {% endif %}
+
+    <div class="container">
+        <h2>History</h2>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Pain</th>
+                    <th>Datetime</th>
+                    <th>Actions</th> <!-- Add this column for actions button (delelte)-->
+                </tr>
+            </thead>
+            <tbody>
+                {% for pain in pains %}
+                <tr>
+                    <td>{{ pain.id }}</td>
+                    <td>{{ pain.pain_level }}</td>
+                    <td>{{ pain.date_time.strftime("%y-%b-%d %H:%M") }}</td>
+                    <td>
+                        <form action="/pain/delete/{{ pain.id }}" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                        <a href="{{ url_for('get_edit_pain_form', pain_id=pain.id) }}" class="btn btn-primary">Edit</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

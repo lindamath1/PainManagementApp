@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+
+<head>
+  <meta charset="UTF-8">
+  <!--ensures that the webpage adapts to the width of the device and sets the initial zoom level to 1.0.-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- <title>Patient Questionnaire</title> -->
+  <!-- links to the Bootstrap CSS file hosted on a CDN ensuring consistent styling across the webpage-->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <!-- Additional head content can be added here -->
+
+  <!--  -------------------------------------------------------- -->
+  <!--  -------------------------------------------------------- -->
+  <!-- icons from here https://icons.getbootstrap.com/           -->
+  <!--                                                           -->
+  <!-- https://www.svgrepo.com/collection/sickness-line-vectors/ -->
+  <!--  -------------------------------------------------------- -->
+  <!--  -------------------------------------------------------- -->
+
+  <!-- increase horizontal and vertical padding -->
+  <style>
+    /* Increase space between form groups */
+    .form-group {
+      margin-bottom: 20px;
+    }
+    /* You can add more custom styles as needed */
+  </style>
+</head>
+
+<!--linking to the Plotly library hosted on a Content Delivery Network (CDN)-->
+<script src="https://cdn.plot.ly/plotly-2.27.0.min.js" charset="utf-8"></script>
+<script>
+  /*darkmode: if the current theme is "light", set it to "dark"; otherwise, set it to "light"*/
+  function DarkModeOnOff() {
+    var element = document.body;
+    element.dataset.bsTheme =
+      element.dataset.bsTheme == "light" ? "dark" : "light";
+  }
+  /*??????*/
+  function stepFunction(event) {
+    debugger;
+    var element = document.getElementsByClassName("collapse");
+    for (var i = 0; i < element.length; i++) {
+      if (element[i] !== event.target.ariaControls) {
+        element[i].classList.remove("show");
+      }
+    }
+  }
+</script>
+
+<!-- include JavaScript files from external sources (Bootstrap framework - commonly used for building responsive and visually appealing web pages). -->
+<!-- Popper.js: manage the positioning of popovers, tooltips, and other UI elements-->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+  integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+<!-- Bootstrap JavaScript file: pre-designed components and styles -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"
+  integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD" crossorigin="anonymous"></script>
+
+<!-- main content of the HTML document -->
+<body>
+  <!-- Bootstrap container: adjusts to screen width -->
+  <div class="container-fluid">
+    <!-- Bootstrap row: columns should not wrap to the next line.-->
+    <div class="row flex-nowrap">
+      <!--dark padding of left side bar-->
+      <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
+        <!-- flex container with a column layout: top/bottom padding and alignment of side bar-->
+        <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+          <!-- link (anchor) with some styling, including flex container properties, white text color, and no text decoration.-->
+          <a href="{{ url_for('home') }}" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+            <span class="fs-5 d-none d-sm-inline">Pain App</span>
+          </a>
+          <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
+
+            <!-- list item with a specific class, often used in a Bootstrap navigation menu.-->
+            <li class="nav-item">
+              <!--pointing to the 'home' route-->
+              <a href="{{ url_for('home') }}" class="nav-link align-middle px-0">
+                <!-- style home icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                  class="bi bi-house-door-fill" viewBox="0 0 16 16">
+                  <path
+                    d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5" />
+                </svg>
+                <span class="ms-1 d-none d-sm-inline">Home</span>
+              </a>
+            </li>
+
+
+            <li>
+              <a href="#submenu2" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                  class="bi bi-bandaid" viewBox="0 0 16 16">
+                  <path
+                    d="M.5 1a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 .354.146l8 8a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708 0l-8-8A.5.5 0 0 1 0 7.5v-6zm1 0v5.793l5.646 5.647 5.646-5.647V1H1z" />
+                  <path
+                    d="m1 0v.073l7 7-1.057 3.548-.014.066-.436.436-2.48-.827a.5.5 0 0 1-.292-.166l-1-1A.5.5 0 0 1 3 9v-2.799L1.201 1H1zm0 1h.17L3 7.2 3.704 5.26 2.414 3.97l.707-.707-1-1a.5.5 0 0 1-.166-.292L1 1zm6.707 2.879.727-.727L13.201 13H12.4l-3.999-4 1.543-5.201z" />
+                </svg>
+                <span class="ms-1 d-none d-sm-inline">Pain</span>
+              </a>
+              <ul class="collapse nav flex-column ms-1" id="submenu2" data-bs-parent="#menu">
+                <li class="w-100">
+                  <a href="{{ url_for('create_pain_entry') }}" class="nav-link px-0">
+                    <span class="d-none d-sm-inline"></span> Create </a>
+                </li>
+                <li>
+                  <a href="{{ url_for('get_pain_data') }}" class="nav-link px-0">
+                    <span class="d-none d-sm-inline"></span>Show</a>
+                </li>
+                <li>
+                  <a href="{{ url_for('get_pain_data') }}" class="nav-link px-0">
+                    <span class="d-none d-sm-inline"></span> Update </a>
+                </li>
+              </ul>
+            </li>
+
+
+            <li>
+              <a href="#submenu1" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                  class="bi bi-speedometer2" viewBox="0 0 16 16">
+                  <path
+                    d="M8 4a.5.5 0 0 1 .5.5V6a.5.5 0 0 1-1 0V4.5A.5.5 0 0 1 8 4zm7.44 7.906l-2.4-1.2a7.442 7.442 0 0 0-.92-.525A8.055 8.055 0 0 0 8 12c-2.3 0-4.44-.973-6-2.667v-.001A7.966 7.966 0 0 0 1.963 9H.5a.5.5 0 0 0 0 1h1.06C2.7 11.256 5.2 12 8 12c.922 0 1.79-.08 2.606-.232a.5.5 0 0 0 .395-.487V5.5a.5.5 0 0 1 1 0V11l3.32 1.658.56-1.87a.5.5 0 0 1 .966.259l-1 3a.5.5 0 0 0 .842.54l2.8-3.5a.5.5 0 0 0 .05-.573z" />
+                </svg>
+                <span class="ms-1 d-none d-sm-inline">Dashboard</span>
+              </a>
+              <ul class="collapse nav flex-column ms-1" id="submenu1" data-bs-parent="#menu">
+                <li class="w-100">
+                  <a href="{{ url_for('get_chart') }}" class="nav-link px-0"> <span
+                      class="d-none d-sm-inline"></span>Chart</a>
+                </li>
+                <!-- Add more dashboard-related links as needed -->
+              </ul>
+            </li>
+
+            
+            <!-- Add more menu items as needed -->
+
+          </ul>
+        </div>
+      </div>
+
+      <!-- ... (remaining code) ... -->
+
+    </div>
+  </div>
+</body>
+
+</html>

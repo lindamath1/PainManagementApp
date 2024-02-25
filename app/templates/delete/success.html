@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <!-- Add these lines to check if the template receives data -->
+    {% if pains %}
+        <p>Pains received in the template!</p>
+    {% else %}
+        <p>No pains received in the template.</p>
+    {% endif %}
+
+    <div class="container">
+        <h2>History</h2>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Pain</th>
+                    <th>Datetime</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pain in pains %}
+                <tr>
+                    <td>{{ pain.pain_level }}</td>
+                    <td>{{ pain.date_time.strftime("%y-%b-%d %H:%M") }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
