@@ -8,7 +8,7 @@ from typing import Optional
 from database import get_db
 from jinja2 import Environment, FileSystemLoader
 
-import models, schemas, crud
+import models, schemas, crud, plot
 
 router = APIRouter()
 templates = Jinja2Templates(directory="templates")
@@ -85,6 +85,12 @@ async def edit_pain_entry(pain_id: int,
         return {"message": "Pain entry edited successfully"}
     else:
         raise HTTPException(status_code=404, detail="Pain entry not found")
+
+@router.get("/pain/plot", response_class=HTMLResponse)
+async def get_plot(request: Request, db: Session = Depends(get_db)):
+    pain_entries = crud.get_pain_entries(crud.GetPainsEntriesIn(db=db))
+    fig_html = plot.create_plot(pain_entries=pain_entries)
+    return templates.TemplateResponse("plot/pain.html", {"request": request, "plot_html": fig_html})
 
 @router.get("/")
 async def home():
