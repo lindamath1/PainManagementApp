@@ -5,6 +5,7 @@
   <h2>Form</h2>
   <form id="pain-form" action="{{ url_for('edit_pain_entry', pain_id=pain_id) }}" method="post">
 
+    <p>Change pain id {{ pain_id }}: </p>
 
     <label for="pain-level">Pain Level:</label>
 
@@ -18,7 +19,7 @@
     
       <label for="date-time">Date and Time:</label>
       <input type="datetime-local" id="date-time" name="date_time" value="{{ default_datetime.strftime('%Y-%m-%dT%H:%M') }}" required><br>
-
+    <br>
     <button type="submit">Submit</button>
   </form>
 </div>

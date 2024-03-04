@@ -3,7 +3,7 @@
 {% block content %}
 <div class="container">
   <h2>Form</h2>
-  <form id="pain-form" action="/pain/create/" method="post">
+  <form id="pain-form" action="{{ url_for('create_pain_entry') }}" method="post">
 
     <label for="pain-level">Pain Level:</label>
 
@@ -13,11 +13,9 @@
       {% endfor %}
     </select><br>
 
-
-    
       <label for="date-time">Date and Time:</label>
       <input type="datetime-local" id="date-time" name="date_time" value="{{ default_datetime.strftime('%Y-%m-%dT%H:%M') }}" required><br>
-
+      <br>
     <button type="submit">Submit</button>
   </form>
 </div>

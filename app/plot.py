@@ -1,11 +1,19 @@
 #%%
+from typing import List
 import plotly.graph_objs as go
-from plotly.subplots import make_subplots
 import pandas as pd
+from schemas import PainInDB
 
-def create_plot(pain_entries):
-    df = pd.DataFrame.from_records([(pain.date_time, pain.pain_level, pain.is_active) for pain in pain_entries],
-                               columns=['date_time', 'pain_level', 'is_active'])
+
+def create_plot(pain_entries: List[PainInDB]):
+    """
+    Function to create a Plotly plot from a list of pain entries.
+
+    Args:
+        pain_entries (List[PainInDB]): list of pain entries to be used to create the plot.
+    """
+    df = pd.DataFrame.from_records([(pain.date_time, pain.pain_level) for pain in pain_entries],
+                               columns=['date_time', 'pain_level'])
 
     traces = []
     traces.append(go.Scatter(x=df['date_time'], 
@@ -16,19 +24,16 @@ def create_plot(pain_entries):
                              hovertemplate = '<br>'.join(["%{x}", 
                                                           "pain %{y}"]) + "<extra></extra>",)) 
     fig = go.Figure(data=traces)
-    print(traces)
 
-    # Update layout and add title
     fig.update_layout(
         title_text='Pain Entries Over Time',
         xaxis_title='date',
         yaxis_title='pain'
     )
-
-    
     #fig.show()
 
     return fig.to_html(full_html=False)
+
 
 if __name__ == "__main__":
     from crud import get_pain_entries, GetPainsEntriesIn

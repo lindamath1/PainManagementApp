@@ -25,7 +25,7 @@
                 <tr>
                     <td>{{ pain.id }}</td>
                     <td>{{ pain.pain_level }}</td>
-                    <td>{{ pain.date_time.strftime("%y-%b-%d %H:%M") }}</td>
+                    <td>{{ pain.date_time.strftime("%Y-%m-%d %H:%M") }}</td>
                     <td>
                         <form action="/pain/delete/{{ pain.id }}" method="post" class="d-inline">
                             <button type="submit" class="btn btn-danger">Delete</button>
