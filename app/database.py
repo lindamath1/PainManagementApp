@@ -1,4 +1,5 @@
 #%%
+import os
 from pydantic import BaseModel
 from typing import Optional, Any
 from sqlalchemy import create_engine, inspect
@@ -57,6 +58,9 @@ def init_db(init_db_in: InitDBIn):
         url: database URL pointing to the SQLite database
         base: declarative Base for database models
     """
+    #ensure the directory exists
+    os.makedirs(os.path.dirname(init_db_in.url.split("sqlite:///")[-1]), exist_ok=True)
+    
     engine = create_engine(
         init_db_in.url, 
         connect_args={"check_same_thread": False}
